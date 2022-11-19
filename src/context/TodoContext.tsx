@@ -6,14 +6,14 @@ export const TodoContext = React.createContext<TodoContextType | null>(null);
 const TodoProvider: any = ({ children }: any) => {
   const [todos, setTodos] = React.useState<ITodo[]>([
     {
-      id: Math.floor( Math.random() * Date.now()) ,
-      title: "post 1",
+      id: Math.floor(Math.random() * Date.now()),
+      title: "todo 1",
       description: "this is a description",
       done: false,
     },
     {
-      id: Math.floor( Math.random() * Date.now()),
-      title: "post 2",
+      id: Math.floor(Math.random() * Date.now()),
+      title: "todo 2",
       description: "this is a description",
       done: true,
     },
