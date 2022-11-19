@@ -19,7 +19,7 @@ const Todo: React.FC<TodoProps> = ({ todo, handleTodoStateChange }) => {
       <ListItemIcon>
         <Checkbox edge="start" disableRipple onChange={handleTodoStateChange} />
       </ListItemIcon>
-      <ListItemText secondary={todo.description}>
+      <ListItemText>
         <TextField disabled={todo.done} size="small" value={todo.title} />
       </ListItemText>
     </ListItem>
