@@ -5,18 +5,18 @@ import { TodoContextType, ITodo } from "../types/todo";
 import Todo from "./Todo";
 
 const TodoList = () => {
-  const { todos } = React.useContext(TodoContext) as TodoContextType;
+  const { todos, handleTodoStateChange } = React.useContext(
+    TodoContext
+  ) as TodoContextType;
 
   return (
     <div>
       <Typography variant="h1">Amazing Todo List</Typography>
       <List>
-        {todos.map((todo: ITodo) => (
+        {todos.map((todo: ITodo, index: number) => (
           <Todo
-            id={todo.id}
-            title={todo.title}
-            description={todo.description}
-            done={todo.done}
+            todo={todo}
+            handleTodoStateChange={() => handleTodoStateChange(index)}
           />
         ))}
       </List>

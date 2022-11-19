@@ -8,19 +8,20 @@ import {
 import React from "react";
 import { ITodo } from "../types/todo";
 
-const Todo = ({ id, title, description, done }: ITodo) => {
+type TodoProps = {
+  todo: ITodo;
+  handleTodoStateChange: any;
+};
+
+const Todo: React.FC<TodoProps> = ({ todo, handleTodoStateChange }) => {
   return (
-    <ListItem disabled={done} key={id}>
-        <ListItemIcon>
-          <Checkbox
-            edge="start"
-            tabIndex={-1}
-            disableRipple
-          />
-        </ListItemIcon>
-        <ListItemText secondary={description}>
-          <TextField size="small" value={title} />
-        </ListItemText>
+    <ListItem disabled={todo.done} key={todo.id}>
+      <ListItemIcon>
+        <Checkbox edge="start" disableRipple onChange={handleTodoStateChange} />
+      </ListItemIcon>
+      <ListItemText secondary={todo.description}>
+        <TextField disabled={todo.done} size="small" value={todo.title} />
+      </ListItemText>
     </ListItem>
   );
 };

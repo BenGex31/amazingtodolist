@@ -15,12 +15,18 @@ const TodoProvider: any = ({ children }: any) => {
       id: Math.floor(Math.random() * Date.now()),
       title: "todo 2",
       description: "this is a description",
-      done: true,
+      done: false,
     },
   ]);
 
+  const handleTodoStateChange = (index: number) => {
+    const _todos = [...todos];
+    _todos[index].done = !_todos[index].done;
+    setTodos(_todos);
+  };
+
   return (
-    <TodoContext.Provider value={{ todos }}>{children}</TodoContext.Provider>
+    <TodoContext.Provider value={{ todos, handleTodoStateChange }}>{children}</TodoContext.Provider>
   );
 };
 
