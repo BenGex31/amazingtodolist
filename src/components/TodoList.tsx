@@ -1,4 +1,4 @@
-import { List } from "@mui/material";
+import { List, Paper, Container } from "@mui/material";
 import React from "react";
 import { TodoContext } from "../context/TodoContext";
 import { TodoContextType, ITodo } from "../types/todo";
@@ -10,15 +10,19 @@ const TodoList = () => {
   ) as TodoContextType;
 
   return (
-    <List sx={{ marginRight: 50, marginLeft: 50 }}>
-      {todos.map((todo: ITodo, index: number) => (
-        <Todo
-          key={todo.id}
-          todo={todo}
-          handleTodoStateChange={() => handleTodoStateChange(index)}
-        />
-      ))}
-    </List>
+    <Container maxWidth="sm">
+      <Paper elevation={3}>
+        <List>
+          {todos.map((todo: ITodo, index: number) => (
+            <Todo
+              key={todo.id}
+              todo={todo}
+              handleTodoStateChange={() => handleTodoStateChange(index)}
+            />
+          ))}
+        </List>
+      </Paper>
+    </Container>
   );
 };
 
