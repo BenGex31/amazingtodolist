@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { ITodo } from "../types/todo";
+import { useNavigate } from "react-router-dom";
 
 type TodoProps = {
   todo: ITodo;
@@ -16,11 +17,13 @@ type TodoProps = {
 };
 
 const Todo: React.FC<TodoProps> = ({ todo, handleTodoStateChange }) => {
+  const navigate = useNavigate();
+
   return (
     <ListItem
       key={todo.id}
       secondaryAction={
-        <IconButton>
+        <IconButton onClick={() => navigate(`/todo/${todo.id}`)}>
           <OpenInNew />
         </IconButton>
       }
