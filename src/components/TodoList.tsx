@@ -11,8 +11,10 @@ const TodoList = () => {
 
   return (
     <div>
-      <Typography variant="h1">Amazing Todo List</Typography>
-      <List>
+      <Typography align="center" variant="h1">
+        Amazing Todo List
+      </Typography>
+      <List sx={{ marginRight: 50, marginLeft: 50 }}>
         {todos.map((todo: ITodo, index: number) => (
           <Todo
             todo={todo}

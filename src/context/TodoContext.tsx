@@ -20,13 +20,16 @@ const TodoProvider: any = ({ children }: any) => {
   ]);
 
   const handleTodoStateChange = (index: number) => {
-    const _todos = [...todos];
+    const _todos: ITodo[] = [...todos];
     _todos[index].done = !_todos[index].done;
+    _todos.sort((a: any, b: any) => a.done - b.done);
     setTodos(_todos);
   };
 
   return (
-    <TodoContext.Provider value={{ todos, handleTodoStateChange }}>{children}</TodoContext.Provider>
+    <TodoContext.Provider value={{ todos, handleTodoStateChange }}>
+      {children}
+    </TodoContext.Provider>
   );
 };
 

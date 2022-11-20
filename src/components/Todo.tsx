@@ -1,5 +1,7 @@
+import { OpenInNew } from "@mui/icons-material";
 import {
   Checkbox,
+  IconButton,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -15,12 +17,31 @@ type TodoProps = {
 
 const Todo: React.FC<TodoProps> = ({ todo, handleTodoStateChange }) => {
   return (
-    <ListItem disabled={todo.done} key={todo.id}>
+    <ListItem
+      key={todo.id}
+      secondaryAction={
+        <IconButton>
+          <OpenInNew />
+        </IconButton>
+      }
+    >
       <ListItemIcon>
-        <Checkbox edge="start" disableRipple onChange={handleTodoStateChange} />
+        <Checkbox
+          checked={todo.done}
+          edge="start"
+          disableRipple
+          onChange={handleTodoStateChange}
+        />
       </ListItemIcon>
       <ListItemText>
-        <TextField disabled={todo.done} size="small" value={todo.title} />
+        <TextField
+          id={`todo-${todo.id}`}
+          variant="standard"
+          disabled={todo.done}
+          size="small"
+          value={todo.title}
+          sx={{ textDecoration: todo.done ? "line-through" : null }}
+        />
       </ListItemText>
     </ListItem>
   );
