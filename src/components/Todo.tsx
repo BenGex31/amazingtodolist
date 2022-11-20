@@ -21,7 +21,6 @@ const Todo: React.FC<TodoProps> = ({ todo, handleTodoStateChange }) => {
 
   return (
     <ListItem
-      key={todo.id}
       secondaryAction={
         <IconButton onClick={() => navigate(`/todo/${todo.id}`)}>
           <OpenInNew />

@@ -17,6 +17,7 @@ const TodoList = () => {
       <List sx={{ marginRight: 50, marginLeft: 50 }}>
         {todos.map((todo: ITodo, index: number) => (
           <Todo
+            key={todo.id}
             todo={todo}
             handleTodoStateChange={() => handleTodoStateChange(index)}
           />
