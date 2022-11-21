@@ -8,4 +8,5 @@ export type TodoContextType = {
   todos: ITodo[];
   handleTodoStateChange: (index: number) => void
   onDeleteTodoClick: (index: number) => void
+  addNewTodo: (_title: string, _description: string) => void
 };

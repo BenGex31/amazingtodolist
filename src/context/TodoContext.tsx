@@ -32,9 +32,22 @@ const TodoProvider: any = ({ children }: any) => {
     setTodos(_todos);
   };
 
+  const addNewTodo = (_title: string, _description: string) => {
+    const todo: ITodo = {
+      id: Math.floor(Math.random() * Date.now()),
+      title: _title,
+      description: _description,
+      done: false,
+    };
+    const _todos: ITodo[] = [...todos];
+    _todos.push(todo);
+    setTodos(_todos);
+    // todo implement success snack bar
+  };
+
   return (
     <TodoContext.Provider
-      value={{ todos, handleTodoStateChange, onDeleteTodoClick }}
+      value={{ todos, handleTodoStateChange, onDeleteTodoClick, addNewTodo }}
     >
       {children}
     </TodoContext.Provider>
