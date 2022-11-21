@@ -7,4 +7,5 @@ export interface ITodo {
 export type TodoContextType = {
   todos: ITodo[];
   handleTodoStateChange: (index: number) => void
+  onDeleteTodoClick: (index: number) => void
 };

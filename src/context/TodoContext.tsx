@@ -26,8 +26,16 @@ const TodoProvider: any = ({ children }: any) => {
     setTodos(_todos);
   };
 
+  const onDeleteTodoClick = (index: number) => {
+    const _todos: ITodo[] = [...todos];
+    _todos.splice(index, 1);
+    setTodos(_todos);
+  };
+
   return (
-    <TodoContext.Provider value={{ todos, handleTodoStateChange }}>
+    <TodoContext.Provider
+      value={{ todos, handleTodoStateChange, onDeleteTodoClick }}
+    >
       {children}
     </TodoContext.Provider>
   );

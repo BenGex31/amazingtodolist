@@ -5,7 +5,7 @@ import { TodoContextType, ITodo } from "../types/todo";
 import Todo from "./Todo";
 
 const TodoList = () => {
-  const { todos, handleTodoStateChange } = React.useContext(
+  const { todos, handleTodoStateChange, onDeleteTodoClick } = React.useContext(
     TodoContext
   ) as TodoContextType;
 
@@ -18,6 +18,7 @@ const TodoList = () => {
               key={todo.id}
               todo={todo}
               handleTodoStateChange={() => handleTodoStateChange(index)}
+              onDeleteTodoClick={() => onDeleteTodoClick(index)}
             />
           ))}
         </List>

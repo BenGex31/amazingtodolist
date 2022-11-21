@@ -1,7 +1,5 @@
-import { OpenInNew } from "@mui/icons-material";
 import {
   Checkbox,
-  IconButton,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -9,22 +7,27 @@ import {
 } from "@mui/material";
 import React from "react";
 import { ITodo } from "../types/todo";
-import { useNavigate } from "react-router-dom";
+import ButtonGroupTodo from "./ButtonGroupTodo";
 
 type TodoProps = {
   todo: ITodo;
-  handleTodoStateChange: any;
+  handleTodoStateChange: () => void;
+  onDeleteTodoClick: () => void;
 };
 
-const Todo: React.FC<TodoProps> = ({ todo, handleTodoStateChange }) => {
-  const navigate = useNavigate();
-
+const Todo: React.FC<TodoProps> = ({
+  todo,
+  handleTodoStateChange,
+  onDeleteTodoClick,
+}) => {
   return (
     <ListItem
       secondaryAction={
-        <IconButton onClick={() => navigate(`/todo/${todo.id}`)}>
-          <OpenInNew />
-        </IconButton>
+        <ButtonGroupTodo
+          key={todo.id}
+          todo={todo}
+          onDeleteTodoClick={onDeleteTodoClick}
+        />
       }
     >
       <ListItemIcon>
