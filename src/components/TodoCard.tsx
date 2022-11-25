@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { orange } from "@mui/material/colors";
+import moment from "moment";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ITodo } from "../types/todo";
@@ -35,6 +36,18 @@ const TodoCard = ({ todoFinded }: TodoCardProps) => {
       <CardContent>
         <Typography fontWeight={"bold"}>Description:</Typography>
         <Typography>{todoFinded?.description}</Typography>
+      </CardContent>
+      <CardContent>
+        <Typography fontWeight={"bold"}>Created:</Typography>
+        <Typography>
+          {moment(todoFinded?.created).format("dddd, DD/MM/YYYY, h:mm:ss a")}
+        </Typography>
+      </CardContent>
+      <CardContent>
+        <Typography fontWeight={"bold"}>Updated:</Typography>
+        <Typography>
+          {moment(todoFinded?.updated).format("dddd, DD/MM/YYYY, h:mm:ss a")}
+        </Typography>
       </CardContent>
       <CardActions>
         <IconButton onClick={() => navigate("/")}>

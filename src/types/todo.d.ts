@@ -3,6 +3,8 @@ export interface ITodo {
   title: string;
   description: string;
   done: boolean;
+  created: number;
+  updated: number;
 }
 export type TodoContextType = {
   todos: ITodo[];

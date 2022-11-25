@@ -10,18 +10,23 @@ const TodoProvider: any = ({ children }: any) => {
       title: "todo 1",
       description: "this is a description",
       done: false,
+      created: Date.now(),
+      updated: Date.now(),
     },
     {
       id: Math.floor(Math.random() * Date.now()),
       title: "todo 2",
       description: "this is a description",
       done: false,
+      created: Date.now(),
+      updated: Date.now(),
     },
   ]);
 
   const handleTodoStateChange = (index: number) => {
     const _todos: ITodo[] = [...todos];
     _todos[index].done = !_todos[index].done;
+    _todos[index].updated = Date.now();
     _todos.sort((a: any, b: any) => a.done - b.done);
     setTodos(_todos);
   };
@@ -38,6 +43,8 @@ const TodoProvider: any = ({ children }: any) => {
       title: _title,
       description: _description,
       done: false,
+      created: Date.now(),
+      updated: Date.now(),
     };
     const _todos: ITodo[] = [...todos];
     _todos.push(todo);
