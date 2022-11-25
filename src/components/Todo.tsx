@@ -6,7 +6,8 @@ import {
   TextField,
 } from "@mui/material";
 import React from "react";
-import { ITodo } from "../types/todo";
+import { TodoContext } from "../context/TodoContext";
+import { ITodo, TodoContextType } from "../types/todo";
 import ButtonGroupTodo from "./ButtonGroupTodo";
 
 type TodoProps = {
@@ -20,6 +21,10 @@ const Todo: React.FC<TodoProps> = ({
   handleTodoStateChange,
   onDeleteTodoClick,
 }) => {
+  const { onUpdateTodoTitleClick } = React.useContext(
+    TodoContext
+  ) as TodoContextType;
+  const [todoTitle, setTodoTitle] = React.useState<string>(todo.title);
   return (
     <ListItem
       secondaryAction={
@@ -27,6 +32,10 @@ const Todo: React.FC<TodoProps> = ({
           key={todo.id}
           todo={todo}
           onDeleteTodoClick={onDeleteTodoClick}
+          onUpdateTodoTitleClick={() =>
+            onUpdateTodoTitleClick(todo.id, todoTitle)
+          }
+          todoTitle={todoTitle}
         />
       }
     >
@@ -44,8 +53,9 @@ const Todo: React.FC<TodoProps> = ({
           variant="standard"
           disabled={todo.done}
           size="small"
-          value={todo.title}
+          value={todoTitle}
           sx={{ textDecoration: todo.done ? "line-through" : null }}
+          onChange={(event) => setTodoTitle(event.target.value)}
         />
       </ListItemText>
     </ListItem>

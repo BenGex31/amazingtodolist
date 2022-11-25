@@ -29,12 +29,14 @@ const TodoProvider: any = ({ children }: any) => {
     _todos[index].updated = Date.now();
     _todos.sort((a: any, b: any) => a.done - b.done);
     setTodos(_todos);
+    // todo implement success snack bar
   };
 
   const onDeleteTodoClick = (index: number) => {
     const _todos: ITodo[] = [...todos];
     _todos.splice(index, 1);
     setTodos(_todos);
+    // todo implement success snack bar
   };
 
   const addNewTodo = (_title: string, _description: string) => {
@@ -52,9 +54,27 @@ const TodoProvider: any = ({ children }: any) => {
     // todo implement success snack bar
   };
 
+  const onUpdateTodoTitleClick = (id: number, title: string) => {
+    // eslint-disable-next-line array-callback-return
+    todos.filter((todo: ITodo) => {
+      if (todo.id === id) {
+        todo.title = title;
+        todo.updated = Date.now();
+        setTodos([...todos]);
+        // todo implement success snack bar
+      }
+    });
+  };
+
   return (
     <TodoContext.Provider
-      value={{ todos, handleTodoStateChange, onDeleteTodoClick, addNewTodo }}
+      value={{
+        todos,
+        handleTodoStateChange,
+        onDeleteTodoClick,
+        addNewTodo,
+        onUpdateTodoTitleClick,
+      }}
     >
       {children}
     </TodoContext.Provider>
