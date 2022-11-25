@@ -50,6 +50,7 @@ const TodoProvider: any = ({ children }: any) => {
     };
     const _todos: ITodo[] = [...todos];
     _todos.push(todo);
+    _todos.sort((a: any, b: any) => b.created - a.created);
     setTodos(_todos);
     // todo implement success snack bar
   };
