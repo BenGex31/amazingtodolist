@@ -1,5 +1,5 @@
 export interface ITodo {
-  id: number;
+  id: string;
   title: string;
   description: string;
   done: boolean;
@@ -8,8 +8,8 @@ export interface ITodo {
 }
 export type TodoContextType = {
   todos: ITodo[];
-  handleTodoStateChange: (index: number) => void
-  onDeleteTodoClick: (index: number) => void
+  handleTodoStateChange: (id: string) => void
+  onDeleteTodoClick: (id: string) => void
   addNewTodo: (_title: string, _description: string) => void
-  onUpdateTodoTitleClick: (id: number, title: string) => void
+  onUpdateTodoTitleClick: (id: string, title: string) => void
 };

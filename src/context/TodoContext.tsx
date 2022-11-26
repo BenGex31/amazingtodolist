@@ -1,70 +1,104 @@
 import * as React from "react";
 import { TodoContextType, ITodo } from "../types/todo";
+import appFirebase from "../firebase/config";
+import {
+  addDoc,
+  collection,
+  getFirestore,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 
 export const TodoContext = React.createContext<TodoContextType | null>(null);
+const db = getFirestore(appFirebase);
 
 const TodoProvider: any = ({ children }: any) => {
-  const [todos, setTodos] = React.useState<ITodo[]>([
-    {
-      id: Math.floor(Math.random() * Date.now()),
-      title: "todo 1",
-      description: "this is a description",
-      done: false,
-      created: Date.now(),
-      updated: Date.now(),
-    },
-    {
-      id: Math.floor(Math.random() * Date.now()),
-      title: "todo 2",
-      description: "this is a description",
-      done: false,
-      created: Date.now(),
-      updated: Date.now(),
-    },
-  ]);
+  const [todos, setTodos] = React.useState<ITodo[] | []>([]);
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [snackBar, setSnackBar] = React.useState({});
 
-  const handleTodoStateChange = (index: number) => {
-    const _todos: ITodo[] = [...todos];
-    _todos[index].done = !_todos[index].done;
-    _todos[index].updated = Date.now();
-    _todos.sort((a: any, b: any) => a.done - b.done);
-    setTodos(_todos);
+  React.useEffect(() => {
+    getAllTodosFromFirebase();
+  }, []);
+
+  const getAllTodosFromFirebase = async () => {
+    setLoading(true);
+    try {
+      const querySnapshot = await getDocs(collection(db, "todos"));
+      const _todos: ITodo[] = [];
+      querySnapshot.forEach((doc) => {
+        // @ts-ignore
+        _todos.push({ ...doc.data(), id: doc.id });
+      });
+      setTodos(
+        _todos.sort(
+          (a: any, b: any) => a.done - b.done || b.created - a.created
+        )
+      );
+      setLoading(false);
+      // todo implement success snack bar
+    } catch (error) {
+      setLoading(false);
+      // todo implement error snack bar
+    }
+  };
+
+  const updateDocById = async (id: string) => {
+    const todoRef = doc(db, "todos", id);
+    const todoFinded = todos.find((todo) => todo.id === id);
+    await updateDoc(todoRef, { done: !todoFinded?.done, updated: Date.now() });
     // todo implement success snack bar
   };
 
-  const onDeleteTodoClick = (index: number) => {
-    const _todos: ITodo[] = [...todos];
-    _todos.splice(index, 1);
-    setTodos(_todos);
+  const handleTodoStateChange = (id: string) => {
+    updateDocById(id);
+    getAllTodosFromFirebase();
+  };
+
+  const deleteTodoById = async (id: string) => {
+    const todoRef = doc(db, "todos", id);
+    await deleteDoc(todoRef);
     // todo implement success snack bar
+  };
+
+  const onDeleteTodoClick = (id: string) => {
+    deleteTodoById(id);
+    getAllTodosFromFirebase();
+  };
+
+  const addNewTodoInFirebase = async (data: ITodo) => {
+    try {
+      await addDoc(collection(db, "todos"), data);
+      getAllTodosFromFirebase();
+      // todo implement success snack bar
+    } catch (error) {
+      console.log(error);
+      // todo implement error snack bar
+    }
   };
 
   const addNewTodo = (_title: string, _description: string) => {
     const todo: ITodo = {
-      id: Math.floor(Math.random() * Date.now()),
+      id: "",
       title: _title,
       description: _description,
       done: false,
       created: Date.now(),
       updated: Date.now(),
     };
-    const _todos: ITodo[] = [...todos];
-    _todos.push(todo);
-    _todos.sort((a: any, b: any) => b.created - a.created);
-    setTodos(_todos);
-    // todo implement success snack bar
+    addNewTodoInFirebase(todo);
   };
 
-  const onUpdateTodoTitleClick = (id: number, title: string) => {
-    // eslint-disable-next-line array-callback-return
-    todos.filter((todo: ITodo) => {
-      if (todo.id === id) {
-        todo.title = title;
-        todo.updated = Date.now();
-        setTodos([...todos]);
-        // todo implement success snack bar
-      }
-    });
+  const updateTodoTitleById = async (id: string, title: string) => {
+    const todoRef = doc(db, "todos", id);
+    await updateDoc(todoRef, { updated: Date.now(), title: title });
+  };
+
+  const onUpdateTodoTitleClick = (id: string, title: string) => {
+    updateTodoTitleById(id, title);
+    getAllTodosFromFirebase();
   };
 
   return (

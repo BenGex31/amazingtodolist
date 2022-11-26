@@ -18,8 +18,8 @@ const TodoList = () => {
               <Todo
                 key={todo.id}
                 todo={todo}
-                handleTodoStateChange={() => handleTodoStateChange(index)}
-                onDeleteTodoClick={() => onDeleteTodoClick(index)}
+                handleTodoStateChange={() => handleTodoStateChange(todo.id)}
+                onDeleteTodoClick={() => onDeleteTodoClick(todo.id)}
               />
             ))
           ) : (
