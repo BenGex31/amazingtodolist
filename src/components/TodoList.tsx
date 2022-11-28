@@ -3,18 +3,24 @@ import {
   Paper,
   Container,
   Typography,
-  Skeleton,
   CircularProgress,
   Grid,
 } from "@mui/material";
 import React from "react";
 import { TodoContext } from "../context/TodoContext";
 import { TodoContextType, ITodo } from "../types/todo";
+import CustomizedSnackbars from "./CustomizedSnackbars";
 import Todo from "./Todo";
 
 const TodoList = () => {
-  const { todos, handleTodoStateChange, onDeleteTodoClick, loading } =
-    React.useContext(TodoContext) as TodoContextType;
+  const {
+    todos,
+    handleTodoStateChange,
+    onDeleteTodoClick,
+    loading,
+    snackBar,
+    handleSnackBarClose,
+  } = React.useContext(TodoContext) as TodoContextType;
 
   return (
     <Container maxWidth="sm">
@@ -41,6 +47,14 @@ const TodoList = () => {
         <Grid container justifyContent={"center"}>
           <CircularProgress />
         </Grid>
+      )}
+      {snackBar.open && (
+        <CustomizedSnackbars
+          handleSnackBarClose={handleSnackBarClose}
+          severity={snackBar.severity}
+          message={snackBar.message}
+          open={snackBar.open}
+        />
       )}
     </Container>
   );

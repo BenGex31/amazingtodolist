@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TodoContextType, ITodo } from "../types/todo";
+import { TodoContextType, ITodo, ISnackBar } from "../types/todo";
 import appFirebase from "../firebase/config";
 import {
   addDoc,
@@ -17,11 +17,29 @@ const db = getFirestore(appFirebase);
 const TodoProvider: any = ({ children }: any) => {
   const [todos, setTodos] = React.useState<ITodo[] | []>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [snackBar, setSnackBar] = React.useState({});
+  const [snackBar, setSnackBar] = React.useState<ISnackBar>({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   React.useEffect(() => {
     getAllTodosFromFirebase();
+    // eslint-disable-next-line
   }, []);
+
+  function updateSnackBar(
+    open: boolean,
+    severity: "error" | "warning" | "info" | "success",
+    message: string
+  ) {
+    setSnackBar({
+      ...snackBar,
+      open: open,
+      severity: severity,
+      message: message,
+    });
+  }
 
   const getAllTodosFromFirebase = async () => {
     if (todos.length < 1) {
@@ -40,10 +58,10 @@ const TodoProvider: any = ({ children }: any) => {
         )
       );
       setLoading(false);
-      // todo implement success snack bar
     } catch (error) {
       setLoading(false);
-      // todo implement error snack bar
+      console.error(error);
+      updateSnackBar(true, "error", "Loading error todos");
     }
   };
 
@@ -51,7 +69,7 @@ const TodoProvider: any = ({ children }: any) => {
     const todoRef = doc(db, "todos", id);
     const todoFinded = todos.find((todo) => todo.id === id);
     await updateDoc(todoRef, { done: !todoFinded?.done, updated: Date.now() });
-    // todo implement success snack bar
+    updateSnackBar(true, "success", `Todo ${todoFinded?.title} updated !`);
   };
 
   const handleTodoStateChange = (id: string) => {
@@ -62,7 +80,7 @@ const TodoProvider: any = ({ children }: any) => {
   const deleteTodoById = async (id: string) => {
     const todoRef = doc(db, "todos", id);
     await deleteDoc(todoRef);
-    // todo implement success snack bar
+    updateSnackBar(true, "success", "Todo deleted !");
   };
 
   const onDeleteTodoClick = (id: string) => {
@@ -74,10 +92,10 @@ const TodoProvider: any = ({ children }: any) => {
     try {
       await addDoc(collection(db, "todos"), data);
       getAllTodosFromFirebase();
-      // todo implement success snack bar
+      updateSnackBar(true, "success", `Todo ${data.title} added !`);
     } catch (error) {
-      console.log(error);
-      // todo implement error snack bar
+      console.error(error);
+      updateSnackBar(true, "error", "Error adding new todo");
     }
   };
 
@@ -96,11 +114,22 @@ const TodoProvider: any = ({ children }: any) => {
   const updateTodoTitleById = async (id: string, title: string) => {
     const todoRef = doc(db, "todos", id);
     await updateDoc(todoRef, { updated: Date.now(), title: title });
+    updateSnackBar(true, "success", "Title todo updated !");
   };
 
   const onUpdateTodoTitleClick = (id: string, title: string) => {
     updateTodoTitleById(id, title);
     getAllTodosFromFirebase();
+  };
+
+  const handleSnackBarClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    updateSnackBar(false, "success", "");
   };
 
   return (
@@ -112,6 +141,8 @@ const TodoProvider: any = ({ children }: any) => {
         addNewTodo,
         onUpdateTodoTitleClick,
         loading,
+        snackBar,
+        handleSnackBarClose,
       }}
     >
       {children}
