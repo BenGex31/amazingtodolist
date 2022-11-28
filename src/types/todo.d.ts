@@ -17,6 +17,7 @@ export type TodoContextType = {
   onDeleteTodoClick: (id: string) => void;
   addNewTodo: (_title: string, _description: string) => void;
   onUpdateTodoTitleClick: (id: string, title: string) => void;
+  onUpdateTodoDescriptionClick: (id: string, title: string) => void;
   loading: boolean;
   snackBar: ISnackBar
   handleSnackBarClose: (

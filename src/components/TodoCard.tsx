@@ -1,58 +1,133 @@
-import { ArrowBackIosNew, HourglassEmpty, TaskAlt } from "@mui/icons-material";
 import {
+  ArrowBackIosNew,
+  Cancel,
+  CheckCircle,
+  Edit,
+  HourglassEmpty,
+  TaskAlt,
+} from "@mui/icons-material";
+import {
+  ButtonGroup,
   Card,
   CardActions,
   CardContent,
   CardHeader,
+  Divider,
   IconButton,
+  TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { orange } from "@mui/material/colors";
 import moment from "moment";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ITodo } from "../types/todo";
+import { TodoContext } from "../context/TodoContext";
+import { ITodo, TodoContextType } from "../types/todo";
 
 type TodoCardProps = {
   todoFinded: ITodo | undefined;
 };
 
 const TodoCard = ({ todoFinded }: TodoCardProps) => {
+  const { onUpdateTodoDescriptionClick } = React.useContext(
+    TodoContext
+  ) as TodoContextType;
   const navigate = useNavigate();
+  const [isEditDescription, setisEditDescription] =
+    React.useState<boolean>(false);
+  const [newDescription, setNewDescription] = React.useState<
+    string | undefined
+  >(todoFinded?.description);
+
+  function updateTodoDescription() {
+    if (todoFinded && newDescription) {
+      onUpdateTodoDescriptionClick(todoFinded?.id, newDescription);
+    }
+  }
   return (
-    <Card sx={{ marginTop: 10 }}>
+    <Card raised sx={{ marginTop: 10 }}>
       <CardHeader
-        title={`Title : ${todoFinded?.title}`}
+        title={todoFinded?.title}
         action={
-          <IconButton>
-            {todoFinded?.done ? (
-              <TaskAlt color="success" />
-            ) : (
-              <HourglassEmpty sx={{ color: orange[500] }} />
+          <ButtonGroup>
+            <IconButton>
+              {todoFinded?.done ? (
+                <Tooltip title="Done">
+                  <TaskAlt color="success" />
+                </Tooltip>
+              ) : (
+                <Tooltip title="In progress">
+                  <HourglassEmpty sx={{ color: orange[500] }} />
+                </Tooltip>
+              )}
+            </IconButton>
+            <Tooltip title="Edit description">
+              <IconButton
+                onClick={() => setisEditDescription(!isEditDescription)}
+              >
+                <Edit color="primary" />
+              </IconButton>
+            </Tooltip>
+            {isEditDescription && (
+              <>
+                <Tooltip title="Cancel">
+                  <IconButton
+                    onClick={() => setisEditDescription(!isEditDescription)}
+                  >
+                    <Cancel color="error" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Update">
+                  <IconButton
+                    onClick={() => {
+                      updateTodoDescription();
+                      setisEditDescription(!isEditDescription);
+                    }}
+                  >
+                    <CheckCircle color="success" />
+                  </IconButton>
+                </Tooltip>
+              </>
             )}
-          </IconButton>
+          </ButtonGroup>
         }
       />
+      <Divider orientation="horizontal" />
       <CardContent>
         <Typography fontWeight={"bold"}>Description:</Typography>
-        <Typography>{todoFinded?.description}</Typography>
+        {!isEditDescription ? (
+          <Typography>{todoFinded?.description}</Typography>
+        ) : (
+          <TextField
+            sx={{ marginTop: 2 }}
+            fullWidth
+            value={newDescription}
+            onChange={(event) => setNewDescription(event.target.value)}
+          />
+        )}
       </CardContent>
+      <Divider orientation="horizontal" />
       <CardContent>
         <Typography fontWeight={"bold"}>Created:</Typography>
         <Typography>
           {moment(todoFinded?.created).format("dddd, DD/MM/YYYY, h:mm:ss a")}
         </Typography>
       </CardContent>
+      <Divider orientation="horizontal" />
       <CardContent>
         <Typography fontWeight={"bold"}>Updated:</Typography>
         <Typography>
           {moment(todoFinded?.updated).format("dddd, DD/MM/YYYY, h:mm:ss a")}
         </Typography>
       </CardContent>
+      <Divider orientation="horizontal" />
       <CardActions>
-        <IconButton onClick={() => navigate("/")}>
-          <ArrowBackIosNew />
-        </IconButton>
+        <Tooltip title="Todos list">
+          <IconButton onClick={() => navigate("/")}>
+            <ArrowBackIosNew color="primary" />
+          </IconButton>
+        </Tooltip>
       </CardActions>
     </Card>
   );

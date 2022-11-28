@@ -1,3 +1,4 @@
+import { CancelOutlined, CheckCircleOutline } from "@mui/icons-material";
 import {
   Button,
   Container,
@@ -38,7 +39,7 @@ const AddTodoDialog = ({ open, onClose }: AddTodoDialogProps) => {
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth={"md"} fullWidth>
-      <DialogTitle>Add a todo</DialogTitle>
+      <DialogTitle>Add a new todo</DialogTitle>
       <DialogContent>
         <Container maxWidth="sm">
           <Grid
@@ -68,8 +69,6 @@ const AddTodoDialog = ({ open, onClose }: AddTodoDialogProps) => {
               />
               <TextField
                 label={"Description"}
-                multiline
-                maxRows={4}
                 fullWidth
                 margin="dense"
                 value={newTodo.description}
@@ -83,8 +82,22 @@ const AddTodoDialog = ({ open, onClose }: AddTodoDialogProps) => {
         </Container>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={() => onAddTodoClick()}>Confirm</Button>
+        <Button
+          variant="outlined"
+          style={{ textTransform: "none" }}
+          onClick={onClose}
+          startIcon={<CancelOutlined color="error" />}
+        >
+          Cancel
+        </Button>
+        <Button
+          variant="outlined"
+          style={{ textTransform: "none" }}
+          onClick={() => onAddTodoClick()}
+          startIcon={<CheckCircleOutline color="success" />}
+        >
+          Confirm
+        </Button>
       </DialogActions>
     </Dialog>
   );

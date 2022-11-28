@@ -122,6 +122,17 @@ const TodoProvider: any = ({ children }: any) => {
     getAllTodosFromFirebase();
   };
 
+  const updateTodoDescriptionById = async (id: string, description: string) => {
+    const todoRef = doc(db, "todos", id);
+    await updateDoc(todoRef, { updated: Date.now(), description: description });
+    updateSnackBar(true, "success", "Description todo updated !");
+  };
+
+  const onUpdateTodoDescriptionClick = (id: string, description: string) => {
+    updateTodoDescriptionById(id, description);
+    getAllTodosFromFirebase();
+  };
+
   const handleSnackBarClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -140,6 +151,7 @@ const TodoProvider: any = ({ children }: any) => {
         onDeleteTodoClick,
         addNewTodo,
         onUpdateTodoTitleClick,
+        onUpdateTodoDescriptionClick,
         loading,
         snackBar,
         handleSnackBarClose,

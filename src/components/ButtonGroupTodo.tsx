@@ -1,5 +1,5 @@
 import { CheckCircle, Delete, Info } from "@mui/icons-material";
-import { ButtonGroup, IconButton } from "@mui/material";
+import { ButtonGroup, IconButton, Tooltip } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ITodo } from "../types/todo";
@@ -22,16 +22,22 @@ const ButtonGroupTodo: React.FC<ButtonGroupTodoProps> = ({
   return (
     <ButtonGroup size="small" aria-label="button group todo">
       {todoTitle !== todo.title && (
-        <IconButton onClick={() => onUpdateTodoTitleClick()}>
-          <CheckCircle />
-        </IconButton>
+        <Tooltip title="Update todo title">
+          <IconButton onClick={() => onUpdateTodoTitleClick()}>
+            <CheckCircle color="success" />
+          </IconButton>
+        </Tooltip>
       )}
-      <IconButton onClick={() => navigate(`/todo/${todo.id}`)}>
-        <Info />
-      </IconButton>
-      <IconButton onClick={() => onDeleteTodoClick()}>
-        <Delete />
-      </IconButton>
+      <Tooltip title="More infos">
+        <IconButton onClick={() => navigate(`/todo/${todo.id}`)}>
+          <Info color="primary" />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Delete todo">
+        <IconButton onClick={() => onDeleteTodoClick()}>
+          <Delete color="error" />
+        </IconButton>
+      </Tooltip>
     </ButtonGroup>
   );
 };
