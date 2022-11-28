@@ -24,7 +24,9 @@ const TodoProvider: any = ({ children }: any) => {
   }, []);
 
   const getAllTodosFromFirebase = async () => {
-    setLoading(true);
+    if (todos.length < 1) {
+      setLoading(true);
+    }
     try {
       const querySnapshot = await getDocs(collection(db, "todos"));
       const _todos: ITodo[] = [];
@@ -109,6 +111,7 @@ const TodoProvider: any = ({ children }: any) => {
         onDeleteTodoClick,
         addNewTodo,
         onUpdateTodoTitleClick,
+        loading,
       }}
     >
       {children}
