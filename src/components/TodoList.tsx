@@ -37,7 +37,7 @@ const TodoList = () => {
                 />
               ))
             ) : (
-              <Typography fontWeight={"bold"} align="center">
+              <Typography color={"#617BFF"} fontWeight={"bold"} align="center">
                 No task created ...
               </Typography>
             )}
