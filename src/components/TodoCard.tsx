@@ -48,6 +48,7 @@ const TodoCard = ({ todoFinded }: TodoCardProps) => {
   return (
     <Card raised sx={{ marginTop: 10 }}>
       <CardHeader
+        sx={{ color: "#10069F" }}
         title={todoFinded?.title}
         action={
           <ButtonGroup>
@@ -94,13 +95,21 @@ const TodoCard = ({ todoFinded }: TodoCardProps) => {
         }
       />
       <Divider orientation="horizontal" />
-      <CardContent>
-        <Typography fontWeight={"bold"}>Description:</Typography>
+      <CardContent
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography color={"#10069F"} fontWeight={"bold"}>
+          Description:
+        </Typography>
         {!isEditDescription ? (
-          <Typography>{todoFinded?.description}</Typography>
+          <Typography color={"#617BFF"}>{todoFinded?.description}</Typography>
         ) : (
           <TextField
-            sx={{ marginTop: 2 }}
+            sx={{ marginTop: 2, marginLeft: 2 }}
             fullWidth
             value={newDescription}
             onChange={(event) => setNewDescription(event.target.value)}
@@ -108,16 +117,32 @@ const TodoCard = ({ todoFinded }: TodoCardProps) => {
         )}
       </CardContent>
       <Divider orientation="horizontal" />
-      <CardContent>
-        <Typography fontWeight={"bold"}>Created:</Typography>
-        <Typography>
+      <CardContent
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography color={"#10069F"} fontWeight={"bold"}>
+          Created:
+        </Typography>
+        <Typography color={"#617BFF"}>
           {moment(todoFinded?.created).format("dddd, DD/MM/YYYY, h:mm:ss a")}
         </Typography>
       </CardContent>
       <Divider orientation="horizontal" />
-      <CardContent>
-        <Typography fontWeight={"bold"}>Updated:</Typography>
-        <Typography>
+      <CardContent
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography color={"#10069F"} fontWeight={"bold"}>
+          Updated:
+        </Typography>
+        <Typography color={"#617BFF"}>
           {moment(todoFinded?.updated).format("dddd, DD/MM/YYYY, h:mm:ss a")}
         </Typography>
       </CardContent>
