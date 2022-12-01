@@ -2,9 +2,9 @@ import { AddCircle } from "@mui/icons-material";
 import { Button, Container, Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
 import AddTodoDialog from "./AddTodoDialog";
-import moment from "moment";
 import { TodoContext } from "../context/TodoContext";
 import { TodoContextType } from "../types/todo";
+import AddTodoTitleDate from "./AddTodoTitleDate";
 
 const AddTodo = () => {
   const { todos } = React.useContext(TodoContext) as TodoContextType;
@@ -13,15 +13,7 @@ const AddTodo = () => {
     <Container maxWidth="sm" sx={{ marginTop: 8, marginBottom: 4 }}>
       <Grid container justifyContent={"space-between"}>
         <Grid item direction={"column"} justifyContent="flex-end">
-          <Typography color={"#10069F"} fontWeight={"bold"}>
-            {moment().format("dddd")},{" "}
-            <span style={{ fontWeight: "normal" }}>
-              {moment().format("Do")}
-            </span>
-          </Typography>
-          <Typography color={"#10069F"}>
-            {moment().format("MMMM YYYY")}
-          </Typography>
+          <AddTodoTitleDate />
         </Grid>
         {todos.length > 0 && (
           <Grid item>
